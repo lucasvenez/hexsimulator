@@ -52,13 +52,11 @@ public class Player implements Runnable {
 			 * Expecting HELLO 
 			 */
 			while (!bis.readUTF().equals("HELLO"));
-			println("CL" + this.playerNumber + "> HELLO");
 			
 			/*
 			 * Answering OK
 			 */
 			bos.writeUTF("OK");
-			println("SER> OK");
 			
 			while (true) {
 			
@@ -73,13 +71,11 @@ public class Player implements Runnable {
 					 * Sending GO + last move 
 					 */
 					bos.writeUTF("GO" + HexCommand.getLastMove());
-					println("SER> GO" + HexCommand.getLastMove());
 					
 					/*
 					 * Expecting OK 
 					 */
 					while (!bis.readUTF().equals("OK"));
-					println("CL" + this.playerNumber + "> OK");
 					
 					/*
 					 * Expecting next move with a time of 5 seconds and 200 milliseconds
@@ -113,14 +109,14 @@ public class Player implements Runnable {
 					/* confirm move */ {
 						String message = (timeout ? "TO" : "") + HexCommand.getLastMove();
 						bos.writeUTF(message);
-						println("SER> " + message);
 					}
+					
+					println(HexCommand.getLastMove());
 					
 					/*
 					 * Expecting OK
 					 */
 					while (!bis.readUTF().equals("OK"));
-					println("CL" + this.playerNumber + "> OK\n");
 					
 					if (winner) {
 						bos.writeUTF("ENDW");

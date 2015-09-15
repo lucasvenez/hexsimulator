@@ -41,7 +41,6 @@ public class HexWinner {
 			
 			if (madeMoves.contains(i)) {
 				visited.add(i);
-				System.out.println("CW> " + i);
 				hasWinner = winner(player, i, n, madeMoves, visited);
 			}
 			i = tmp;
@@ -95,7 +94,6 @@ public class HexWinner {
 			for (int l = 0; l < neighbour.length && !result; l++)
 				if (!result && condition[l])
 					if (!visitedMoves.contains(neighbour[l])) {
-						System.out.println("WI> " + neighbour[l]);
 						visitedMoves.add(neighbour[l]);
 						result |= winner(player, neighbour[l], n, madeMoves, visitedMoves);
 					 }

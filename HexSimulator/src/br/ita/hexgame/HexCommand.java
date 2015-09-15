@@ -37,15 +37,13 @@ public class HexCommand {
 			isWinner = confirmMove(position);			
 			
 		} else {
-			
 			isWinner = randomMove();
-			
 		}
 		
 		return isWinner;
 	}
 	
-	private static boolean confirmMove(String position) {
+	private static synchronized boolean confirmMove(String position) {
 		
 		int i = Integer.parseInt(String.valueOf(position.charAt(0)), 16),
 			j = Integer.parseInt(String.valueOf(position.charAt(1)), 16);
@@ -74,7 +72,7 @@ public class HexCommand {
 		
 		int m = (new Random()).nextInt(Move.list.size());
 	
-		isWinner = confirmMove(Move.list.get(m));
+		isWinner = play(Move.list.get(m));
 		
 		return isWinner;
 	}

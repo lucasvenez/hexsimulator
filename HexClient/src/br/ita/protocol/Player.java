@@ -6,9 +6,11 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class Player implements Runnable {
 
+	private static final ArrayList<String> moves = new ArrayList<String>();
 	private int port;
 	private String name;
 
@@ -57,6 +59,13 @@ public class Player implements Runnable {
 				 */
 				while (bis.available() < 0);
 				println("SER> " + (message = bis.readUTF()));
+				
+				if (!moves.contains(message))
+					moves.add(message);
+				else {
+					System.out.println("<<<<"+message+">>>>>");
+					System.exit(19);
+				}
 	
 				if (message.matches("END.")) {
 	
