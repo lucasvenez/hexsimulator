@@ -171,8 +171,6 @@ public class Player implements Runnable {
 
 						HexStatus.board[playerNumber-1]++;
 						
-						HexCommand.log(playerNumber, i + 1);
-						
 						HexStatus.clearMadeMoves();
 						
 						HexStatus.popMove(- 1 - playerNumber);
