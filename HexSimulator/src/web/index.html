@@ -111,6 +111,9 @@
 	var v = function(b) {
 		var t = games[b];
 		
+// 		if (b == 100)
+// 			t = [120,116,23,109,46,94,6,30,104,14,52,107,41,86,54,58,72,28,88,55,110,69,12,35,90,10,117,11,63,20,61,15,0,75,53,42,2,19,78,74,91,100,33,67,99,111,102,112,27,64,87,25,80,70];
+		
 		for (var h = 0; h < 121; h++) {
 			var p = table.getPeace(h)
 			p.setColor("white");
@@ -119,7 +122,7 @@
 		
 		for (var h = 0; h < t.length; h++) {
 			var p = table.getPeace(t[h])
-			p.setColor((["blue", "red"])[h % 2]);
+			p.setColor((["blue", "red"])[b == 100? 1: h % 2]);
 			p.draw();
 		}
 		
@@ -164,7 +167,14 @@
 							<th>Winner</th>
 						</tr>
 					</thead>
-					<tbody></tbody>
+					<tbody>
+<!-- 						<tr> -->
+<!-- 							<td><a href="javascript:v(100);">GAME #000</a></td> -->
+<!-- 							<td></td> -->
+<!-- 							<td></td> -->
+<!-- 							<td></td> -->
+<!-- 						</tr> -->
+					</tbody>
 				</table>
 			</td>
 			<td>

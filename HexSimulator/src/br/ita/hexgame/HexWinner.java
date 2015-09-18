@@ -60,46 +60,48 @@ public class HexWinner {
 			int player, int i, int n, List<Integer> madeMoves, List<Integer> visitedMoves) {
 		
 		boolean result = false;
+
+		if (madeMoves.contains(i)) {
 		
-		/*
-		 * Checking if was a winner
-		 */
-		for (int k = (n * n - 1); k >= n * n - n && !result; k--) {
-			int tmp = k;
-			k -= (player - 1) * 10 * (120 % k);
-			result |= (i == k);
-			k = tmp;
-		}
-		
-		if (!result && madeMoves.contains(i)) {
+			/*
+			 * Checking if was a winner
+			 */
+			for (int k = (n * n - 1); k >= n * n - n && !result; k--) {
+				int tmp = k;
+				k -= (player - 1) * 10 * (120 % k);
+				result |= (i == k);
+				k = tmp;
+			}
 			
-			int neighbour[] = new int[] {
-				i - n,       //TOP LEFT
-				i - (n - 1), //TOP RIGHT
-				i - 1,       //MIDDLE LEFT
-				i + 1,       //MIDDLE RIGHT
-				i + (n - 1), //BOTTON LEFT
-				i + n        //BOTTON RIGHT
-			};
-			
-			boolean condition[] = new boolean[] {
-				i >= n,                     //TOP LEFT
-				i >= n && i % n < n - 1,    //TOP RIGHT
-				i % n > 0,                  //MIDDLE LEFT
-				i % n < n - 1,              //MIDDLE RIGHT
-				i < n * n - n && i % n > 0, //BOTTON LEFT
-				i < n * n - n               //BOTTON RIGHT	
-			};
-			
-			for (int l = 0; l < neighbour.length && !result; l++)
-				if (!result && condition[l])
-					if (!visitedMoves.contains(neighbour[l])) {
+			if (!result) {
+				
+				int neighbour[] = new int[] {
+					i - n,       //TOP LEFT
+					i - (n - 1), //TOP RIGHT
+					i - 1,       //MIDDLE LEFT
+					i + 1,       //MIDDLE RIGHT
+					i + (n - 1), //BOTTON LEFT
+					i + n        //BOTTON RIGHT
+				};
+				
+				boolean condition[] = new boolean[] {
+					i >= n,                     //TOP LEFT
+					i >= n && i % n < n - 1,    //TOP RIGHT
+					i % n > 0,                  //MIDDLE LEFT
+					i % n < n - 1,              //MIDDLE RIGHT
+					i < n * n - n && i % n > 0, //BOTTON LEFT
+					i < n * n - n               //BOTTON RIGHT	
+				};
+				
+				for (int l = 0; l < neighbour.length && !result; l++)
+					if (!result && condition[l] && !visitedMoves.contains(neighbour[l])) {
 						visitedMoves.add(neighbour[l]);
 						result |= winner(player, neighbour[l], n, madeMoves, visitedMoves);
-					 }
-		 }
+					}
+			 }
+		}
 		
-		 return result;
+		return result;
 	}
 
 	/**

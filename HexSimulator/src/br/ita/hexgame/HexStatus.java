@@ -48,11 +48,17 @@ public class HexStatus {
 		return tableSize;
 	}
 	
-	public static void addMove(int currentPlayer, int move) {
-		if (currentPlayer == 1)
+	public static void addMove(int player, int move) {
+		if (player == 1)
 			whiteMoves.add(move);
-		else
+		else if (player == 2)
 			blackMoves.add(move);
+		else
+			try {
+				throw new Exception("Invalid player.");
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 	}
 
 	public static synchronized void setWinner(int player) {

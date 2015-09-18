@@ -1,6 +1,7 @@
 package br.ita.hexgame;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,6 +18,7 @@ public class HexWinnerTest {
 		private static List<Integer> movesPlayerTwo1 = new ArrayList<Integer>();
 		private static List<Integer> movesPlayerTwo2 = new ArrayList<Integer>();
 		private static List<Integer> movesPlayerTwo3 = new ArrayList<Integer>();
+		private static List<Integer> movesPlayerTwo4 = new ArrayList<Integer>();
 		
 		static {
 			movesPlayerOne1.addAll(
@@ -40,12 +42,22 @@ public class HexWinnerTest {
 			
 			movesPlayerTwo2.addAll(
 					Arrays.asList(
-						new Integer[] {120,116,23,109,46,94,6,30,104,14,52,107,41,86,54,58,72,28,88,55,110,69,12,35,90,10,117,11,63,20,61,15,0,75,53,42,2,19,78,74,91,100,33,67,99,111,102,112,27,64,87,25,80,70}
+						new Integer[] {120,116,23,109,46,94,6,30,104,14,52,107,41,86,54,58,72,28,88,55,110,
+									   69,12,35,90,10,117,11,63,20,61,15,0,75,53,42,2,19,78,74,91,100,33,67,
+									   99,111,102,112,27,64,87,25,80,70}
 					));
 			
 			movesPlayerTwo3.addAll(
 					Arrays.asList(
-						new Integer[] {120,60,92,82,54,10,111,99,57,112,25,42,102,11,96,47,71,100,83,91,98,50,33,21,38,61,5,93,18,22,88,113,39,118,63,52,9,76,104,28,19,116,86,81,26,80,14,85,74,49,55,69,56,73,23,84,103,46,1,94,87,115,12,24,117,78,48,16,64,68,15,77,66,67,31,36,58,110,89,27,13,59,53,72,109,7,62,106,108,20,43,40,70,51} 
+						new Integer[] {60,82,10,99,112,42,11,47,100,91,50,21,61,93,22,113,118,52,76,28,116,81,80,
+									   85,49,69,73,84,46,94,115,24,78,16,68,77,67,36,110,27,59,72,7,106,20,40,51} 
+					));
+			
+			movesPlayerTwo4.addAll(
+					Arrays.asList(
+						new Integer[] {18,59,97,9,15,40,119,78,44,68,112,20,61,6,24,42,38,31,23,36,118,60,65,113,
+									   80,5,28,102,14,35,117,8,85,90,66,83,49,96,12,55,57,45,116,69,98,79,58,26,
+									   62,1,2,48,89,108,95,84,13,46}
 					));
 		}
 		
@@ -68,19 +80,20 @@ public class HexWinnerTest {
 	}
 	
 	@Test
-	public void hasWinnerPlayerTwo() {
+	public void hasWinnerPlayerTwoWinner() {
 		assertTrue(HexWinner.hasWinner(2, n, movesPlayerTwo1));
 		assertFalse(HexWinner.hasWinner(2, n, movesPlayerTwo2));
+	}
+	
+	@Test
+	public void hasWinnerPlayerTwoLoser() {
 		
-		int j = 0;
-		int a[] = new int[47];
-		for (int i = 1; i < movesPlayerTwo3.size(); i += 2) {
-			a[j] = movesPlayerTwo3.get(i);
-			j++;
-		}
+		assertTrue(HexWinner.hasWinnerRequeriments(2, movesPlayerTwo3.size() * 2, movesPlayerTwo3));
+		assertFalse(HexWinner.hasWinner(2, movesPlayerTwo3.size() * 2, movesPlayerTwo3));
 		
-		System.out.println(HexWinner.hasWinnerRequeriments(2, a.length * 2, movesPlayerTwo3));
-		System.out.println(HexWinner.hasWinner(2, a.length * 2, movesPlayerTwo3));
+		assertFalse(HexWinner.hasWinnerRequeriments(2, movesPlayerTwo4.size() * 2, movesPlayerTwo4));
+		assertFalse(HexWinner.hasWinner(2, movesPlayerTwo4.size() * 2, movesPlayerTwo4));
+		
 	}
 }
 
