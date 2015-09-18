@@ -16,6 +16,7 @@ public class HexWinnerTest {
 		private static List<Integer> movesPlayerOne2 = new ArrayList<Integer>();
 		private static List<Integer> movesPlayerTwo1 = new ArrayList<Integer>();
 		private static List<Integer> movesPlayerTwo2 = new ArrayList<Integer>();
+		private static List<Integer> movesPlayerTwo3 = new ArrayList<Integer>();
 		
 		static {
 			movesPlayerOne1.addAll(
@@ -41,6 +42,11 @@ public class HexWinnerTest {
 					Arrays.asList(
 						new Integer[] {120,116,23,109,46,94,6,30,104,14,52,107,41,86,54,58,72,28,88,55,110,69,12,35,90,10,117,11,63,20,61,15,0,75,53,42,2,19,78,74,91,100,33,67,99,111,102,112,27,64,87,25,80,70}
 					));
+			
+			movesPlayerTwo3.addAll(
+					Arrays.asList(
+						new Integer[] {120,60,92,82,54,10,111,99,57,112,25,42,102,11,96,47,71,100,83,91,98,50,33,21,38,61,5,93,18,22,88,113,39,118,63,52,9,76,104,28,19,116,86,81,26,80,14,85,74,49,55,69,56,73,23,84,103,46,1,94,87,115,12,24,117,78,48,16,64,68,15,77,66,67,31,36,58,110,89,27,13,59,53,72,109,7,62,106,108,20,43,40,70,51} 
+					));
 		}
 		
 	@Test
@@ -65,6 +71,16 @@ public class HexWinnerTest {
 	public void hasWinnerPlayerTwo() {
 		assertTrue(HexWinner.hasWinner(2, n, movesPlayerTwo1));
 		assertFalse(HexWinner.hasWinner(2, n, movesPlayerTwo2));
+		
+		int j = 0;
+		int a[] = new int[47];
+		for (int i = 1; i < movesPlayerTwo3.size(); i += 2) {
+			a[j] = movesPlayerTwo3.get(i);
+			j++;
+		}
+		
+		System.out.println(HexWinner.hasWinnerRequeriments(2, a.length * 2, movesPlayerTwo3));
+		System.out.println(HexWinner.hasWinner(2, a.length * 2, movesPlayerTwo3));
 	}
 }
 

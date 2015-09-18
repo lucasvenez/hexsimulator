@@ -20,16 +20,16 @@ public class Player implements Runnable {
 	private int numberOfGames = 0;
 	
 	public Player(int playerNumber, int port, int numberOfGames) {
-		this.playerNumber = playerNumber;
-		this.port = port;
+		this.playerNumber  = playerNumber;
+		this.port          = port;
 		this.numberOfGames = numberOfGames;
 	}
 	
 	@Override
 	public void run() {
 		
-		Socket client = null;
-		DataInputStream bis = null;
+		Socket client        = null;
+		DataInputStream bis  = null;
 		DataOutputStream bos = null;
 
 		/*
@@ -38,7 +38,6 @@ public class Player implements Runnable {
 		try {
 			server = new ServerSocket(port);
 			
-			while (true) {
 				
 				try {
 				
@@ -52,7 +51,7 @@ public class Player implements Runnable {
 					 */
 					bis = new DataInputStream(client.getInputStream());
 					bos = new DataOutputStream(client.getOutputStream());
-
+					
 					/*
 					 * Communication process
 					 */
@@ -69,7 +68,6 @@ public class Player implements Runnable {
 						e.printStackTrace();
 					}
 				}
-			}
 			
 		} catch (IOException e1) {
 			e1.printStackTrace();
@@ -88,16 +86,10 @@ public class Player implements Runnable {
 		 * Expecting HELLO 
 		 */
 		while (!bis.readUTF().equals("HELLO"));
-
-		if (HexStatus.getMoves().size() > 0) {
-			HexStatus.clearMoves();
-			HexStatus.board[0] = 0;
-			HexStatus.board[1] = 0;
-		}
 		
 		/*
 		 * Answering OK
-		 */
+		 */ 
 		bos.writeUTF("OK");
 		
 		for (int i = 0; i < numberOfGames; i++) {

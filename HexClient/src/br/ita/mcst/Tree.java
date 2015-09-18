@@ -10,4 +10,13 @@ public class Tree implements Serializable {
 	private ArrayList<Node> leaves = new ArrayList<Node>();
 	
 	private final Set<Integer> invalidMoves = new HashSet<Integer>();
+	
+	
+	public void pruning(int lastMove) {
+		
+	}
+	
+	public void pruning(String lastMove) {
+		
+	}
 }

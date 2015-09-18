@@ -26,8 +26,8 @@ Hexagon.prototype.draw = function() {
 	this.ctx.stroke();
 	this.ctx.fill();
 	this.ctx.fillStyle = "black";
-//	this.ctx.font = "10pt sans-serif";
-//	this.ctx.fillText(this.fillText, this.x, this.y);
+	this.ctx.font = "10pt sans-serif";
+	this.ctx.fillText(this.fillText, this.x, this.y);
 };
 
 Hexagon.prototype.setLineColor = function(lineColor) {
