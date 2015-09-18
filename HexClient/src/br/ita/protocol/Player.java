@@ -6,17 +6,21 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
 
 public class Player implements Runnable {
 
-	private static final ArrayList<String> moves = new ArrayList<String>();
 	private int port;
+	
 	private String name;
+	
+	private String host;
+	
+	private int games = 15;
 
-	public Player(int port, String name) {
+	public Player(String host, int port, String name) {
 		this.port = port;
 		this.name = name;
+		this.host = host;
 	}
 	
 	public void run() {
@@ -29,7 +33,7 @@ public class Player implements Runnable {
 		
 			do {
 				try {
-					client = new Socket("localhost", this.port);
+					client = new Socket(this.host, this.port);
 				} catch(Exception e) {
 					e.printStackTrace();
 				}
@@ -39,18 +43,37 @@ public class Player implements Runnable {
 			bis = new DataInputStream(client.getInputStream());
 			bos = new DataOutputStream(client.getOutputStream());
 	
-			/*
-			 * Sent HELLO
-			 */
-			bos.writeUTF("HELLO" + name);
-			println("CLI> HELLO" + name);
-	
-			/*
-			 * Receive OK
-			 */
-			while (bis.available() < 0);
-			println("SER> " + bis.readUTF());
-	
+			communication(bis, bos);
+		} catch(IOException e) {
+			e.printStackTrace();
+		} finally {
+			/* Close connections */
+			try {
+				bis.close();
+				bos.close();
+				client.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private void communication(DataInputStream bis, DataOutputStream bos) throws IOException {
+
+		/*
+		 * Sent HELLO
+		 */
+		bos.writeUTF("HELLO" + name);
+		println("CLI> HELLO" + name);
+
+		/*
+		 * Receive OK
+		 */
+		while (bis.available() < 0);
+		println("SER> " + bis.readUTF());
+		
+		for (int i = 0; i < games; i++) {
+		
 			while (true) {
 	
 				String message;
@@ -59,25 +82,11 @@ public class Player implements Runnable {
 				 */
 				while (bis.available() < 0);
 				println("SER> " + (message = bis.readUTF()));
-				
-				if (!moves.contains(message))
-					moves.add(message);
-				else {
-					System.out.println("<<<<"+message+">>>>>");
-					System.exit(19);
-				}
 	
-				if (message.matches("END.")) {
-	
-					if (message.charAt(message.length()-1) == 'L')
-						println("\nSER> YOU LOSE");
-					else 
-						println("\nSER> YOU WIN");
-					
+				if (message.matches("END.*"))					
 					break;
 					
-	
-				} else if (message.matches("GO.*")) {
+				if (message.matches("GO.*")) {
 	
 					/*
 					 * Send OK
@@ -104,11 +113,6 @@ public class Player implements Runnable {
 					println("CLI> OK");
 				}
 			}
-		} catch(IOException e) {
-			e.printStackTrace();
-		} finally {
-			/* Close connections */
-			
 		}
 	}
 }

@@ -11,22 +11,25 @@ public class HexClient {
 
 	public static void main(String[] args) throws UnknownHostException, IOException {
 
+		String host = "localhost";
+		
+		int port = 0;
+
 		String name = "";
-		int port    = 0;
 		
 		for (int i = 0; i < args.length; i++) {
 			
 			switch (args[i]) {
 				case "-p": port = Integer.parseInt(args[++i]); break;
 				case "-n": name = args[++i]; break;
-				case "-h":
+				case "-h": host = args[++i]; break;
 				case "help": help(); break;
 				default: println("Invalid parameter " + args[i] + ". Use only -n and -p.");
 			}				
 		}
 		
 		if (port > 0) {
-			Thread client = new Thread(new Player(port, name));
+			Thread client = new Thread(new Player(host, port, name));
 			client.start();
 		}
 	}
