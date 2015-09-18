@@ -1,5 +1,5 @@
 function HexTable(n) {
-	this.n = n;
+	this.n = n;	
 	this.peaces = [];
 };
 
@@ -16,13 +16,17 @@ HexTable.prototype.draw = function() {
 		
 		for (var j = 0; j < this.n; j++) {
 			
-			var h = new Hexagon(ctx, this.n * j + i);
+			var h = new Hexagon(ctx, this.n * i + j);
 			this.peaces[this.peaces.length] = h;
 			h.setSize(size);
-			var x = size * (i + 1) * 2 + size * (j + 1),
-			    y = size * (j + 1) * 2;
-			h.setCenter(x * .87, y * .75);
+			var x = size * (j + 1) * 2 + size * (i + 1),
+			    y = size * (i + 1) * 2;
+			h.setCenter(x * .90, y * .80);
 			h.draw();
 		}
 	}
+};
+
+HexTable.prototype.getPeace = function(i) {
+	return this.peaces[i];
 };

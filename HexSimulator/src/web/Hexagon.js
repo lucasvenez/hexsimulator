@@ -2,7 +2,7 @@ function Hexagon(canvas, j) {
 	this.ctx = canvas;
 	this.color = "#FFFFFF";
 	this.lineColor = "#000000";
-	this.lineWeight = 1;
+	this.lineWidth = 6;
 	this.size = 20;
 	this.x = this.size + 5;
 	this.y = this.size + 5;
@@ -22,12 +22,12 @@ Hexagon.prototype.draw = function() {
  
 	this.ctx.strokeStyle = this.lineColor;
 	this.ctx.fillStyle = this.color;
-	this.ctx.lineWidth = this.lineWeight;
+	this.ctx.lineWidth = this.lineWidth;
 	this.ctx.stroke();
 	this.ctx.fill();
 	this.ctx.fillStyle = "black";
-	this.ctx.font = "10pt sans-serif";
-	this.ctx.fillText(this.fillText, this.x, this.y);
+//	this.ctx.font = "10pt sans-serif";
+//	this.ctx.fillText(this.fillText, this.x, this.y);
 };
 
 Hexagon.prototype.setLineColor = function(lineColor) {

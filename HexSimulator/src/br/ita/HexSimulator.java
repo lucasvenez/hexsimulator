@@ -2,6 +2,7 @@ package br.ita;
 
 import br.ita.hexgame.HexStatus;
 import br.ita.protocol.Player;
+import br.ita.view.View;
 
 import static br.ita.tools.Shortcut.println;
 
@@ -13,26 +14,36 @@ public class HexSimulator {
 			help();
 		} else {
 		
-			int[] port = new int[2];
+			int[] port     = new int[2];
+			int  games     = 15;
+			int  tableSize = 11;
+			int  viewPort  = 8000;
 			
 			for (int i = 0; i < args.length; i++) {
 				
 				switch (args[i]) {
-					case "-p1": port[0] = Integer.parseInt(args[++i]); break;
-					case "-p2": port[1] = Integer.parseInt(args[++i]); break;
+					case "-p1": port[0]   = Integer.parseInt(args[++i]); break;
+					case "-p2": port[1]   = Integer.parseInt(args[++i]); break;
+					case "-g":  games     = Integer.parseInt(args[++i]); break;
+					case "-t":  tableSize = Integer.parseInt(args[++i]); break;
+					case "-v":  viewPort  = Integer.parseInt(args[++i]); break;
 					default: 
-						println("Invalid parameter " + args[i] + ". Use only -p1 and -p2.");
+						println("Invalid parameter " + args[i] + ". Use at least -p1 and -p2.");
 				}				
 			}
 
-			HexStatus.setTableSize(11);
-			
 			if (port[0] != port[1]) {
-				Thread p1 = new Thread(new Player(1, port[0]));
-				Thread p2 = new Thread(new Player(2, port[1]));
+				
+				HexStatus.setTableSize(tableSize);
+				HexStatus.setNumberOfGames(games);
+				
+				Thread p1 = new Thread(new Player(1, port[0], games));
+				Thread p2 = new Thread(new Player(2, port[1], games));
+				Thread v  = new Thread(new View(viewPort));
 				
 				p1.start();
 				p2.start();
+				v.start();
 			} else {
 				println("Port numbers should be different.");
 			}			

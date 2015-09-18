@@ -15,7 +15,7 @@ public class HexWinner {
 	 * 		
 	 * @return the game winner, player 1 or 2, or 0 when the game has no winner.
 	 */
-	public static synchronized boolean hasWinner(int player, int n, int m, List<Integer> madeMoves) {
+	public static synchronized boolean hasWinner(int player, int n, List<Integer> madeMoves) {
 		
 		boolean winner = false;
 
@@ -23,7 +23,7 @@ public class HexWinner {
 		 * The minimum number of movements 
 		 * for having a winner is (2 * n - 1).
 		 */
-		if (hasWinnerRequeriments(player, n, m, madeMoves))
+		if (hasWinnerRequeriments(player, n, madeMoves))
 			winner = calculateWinner(player, n, madeMoves);
 		
 		return winner;
@@ -110,7 +110,7 @@ public class HexWinner {
 	 * @return true whether exists a winner and false otherwise.
 	 */
 	public static synchronized boolean hasWinnerRequeriments(
-			int player, int n, int m, List<Integer> madeMoves) {
+			int player, int n, List<Integer> madeMoves) {
 		
 		boolean contains[] = new boolean[] {false, false};
 		
@@ -139,6 +139,6 @@ public class HexWinner {
 			}
 		}
 		
-		return m >= 2 * n - 1 && contains[0] && contains[1];
+		return contains[0] && contains[1];
 	}
 }

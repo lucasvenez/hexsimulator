@@ -2,10 +2,15 @@ package br.ita.hexgame;
 
 import java.util.ArrayList;
 import java.util.List;
-import static java.lang.Math.max;
 
 public class HexStatus {
 
+	private static List<Integer> moves = new ArrayList<Integer>(); 
+	
+	public static int[] board = new int[] {0, 0};
+	
+	private static int numberOfGames = 15;
+	
 	private static int tableSize = 0;
 
 	private static int winner = 0;
@@ -24,22 +29,6 @@ public class HexStatus {
 	
 	public static List<Integer> getBlackMoves() {
 		return blackMoves;
-	}
-
-	public static List<Integer> getMadeMoves() {
-		
-		List<Integer> moves = new ArrayList<Integer>();
-		
-		for (int i = 0; i < max(whiteMoves.size(), blackMoves.size()); i++) {
-			
-			if (i < whiteMoves.size())
-				moves.add(whiteMoves.get(i));
-			
-			if (i < blackMoves.size())
-				moves.add(blackMoves.get(i));
-		}
-		
-		return moves;
 	}
 	
 	public static List<Integer> getMadeMoves(int player) {
@@ -66,18 +55,45 @@ public class HexStatus {
 			blackMoves.add(move);
 	}
 
-	public static List<Integer> getMadeMove(int player) {
-		if (player == 1)
-			return whiteMoves;
-		else
-			return blackMoves;
-	}
-
 	public static synchronized void setWinner(int player) {
 		HexStatus.winner  = player;		
 	}
 	
 	public static synchronized int getWinner() {
 		return HexStatus.winner;
+	}
+	
+	public static void clearMadeMoves() {
+		whiteMoves.clear();
+		blackMoves.clear();
+		Move.list.clear();
+		Move.list.addAll(Move.validMoves);
+	}
+
+	public static void setNumberOfGames(int games) {
+		numberOfGames = games;
+	}
+	
+	public static int getNumberOfGames() {
+		return numberOfGames;
+	}
+	
+	public static synchronized void popMove(Integer move) {
+		moves.add(move);
+	}
+	
+	/**
+	 * -1 HAS NOTHING
+	 * -2 PLAYER ONE WINS
+	 * -3 PLAYER TWO WINS
+	 * -4 GAME END
+	 * @return
+	 */
+	public static synchronized List<Integer> getMoves() {
+		return HexStatus.moves;
+	}
+
+	public synchronized static void clearMoves() {
+		HexStatus.moves.clear();		
 	}
 }
