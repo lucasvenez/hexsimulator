@@ -1,6 +1,6 @@
-package br.ita.mcst;
+package br.ita.mcts.algorithm;
 
-public class DearCellPattern {
+public class DeadCellPattern {
 
 	private int n = 11;
 	

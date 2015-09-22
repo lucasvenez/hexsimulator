@@ -1,54 +1,51 @@
 package br.ita.tools;
 
-import java.io.FileInputStream;
+import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 
-import br.ita.mcst.Tree;
+import br.ita.mcts.HexTreeSearch;
 
+/**
+ * 
+ * @author Lucas Venezian Povoa
+ *
+ */
 public class SaveObject {
 
-	public static void serializeDataOut(Tree ish)throws IOException{
-	    String fileName= "tree.txt";
-	    
-	    FileOutputStream fos;
-	    ObjectOutputStream oos = null;
-	    
-	    try {
-	    	fos = new FileOutputStream(fileName);
-	    	oos = new ObjectOutputStream(fos);
-	    	oos.writeObject(ish);
-	    } finally {
-	    	oos.close();
-	    }
+	/**
+	 * 
+	 * @param tree
+	 * @throws IOException
+	 */
+	public static void serializeDataOut(HexTreeSearch tree) throws IOException {
+
+		Writer writer = null;
+
+		try {
+			writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("tree.json"), "utf-8"));
+			writer.write(tree.toString());
+		} catch (IOException ex) {
+		} finally {
+			try {
+				writer.close();
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
 	}
 
-	public static Tree serializeDataIn() {
-	   String fileName= "tree.txt";
-	   
-	   Tree tree = null;
-	   
-	   FileInputStream fin;
-	   ObjectInputStream ois = null;
-	   
-	   try {
-		   fin = new FileInputStream(fileName);
-		   ois = new ObjectInputStream(fin);
-		   
-		   tree = (Tree) ois.readObject();
-		   
-	   } catch(IOException | ClassNotFoundException e) {
-		   e.printStackTrace();
-	   } finally {
-		   try {
-			   ois.close();
-		   } catch (IOException e) {
-			   e.printStackTrace();
-		   }
-	   }
-	   
-	   return tree;
+	/**
+	 * 
+	 * @return
+	 * @throws IOException
+	 */
+	public static HexTreeSearch serializeDataIn() throws IOException {
+		
+		JSON
+		
+		return null;
 	}
 }
