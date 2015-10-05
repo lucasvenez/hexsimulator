@@ -13,7 +13,7 @@ HexTable.prototype.draw = function() {
 	var size = 30;
 	
 	for (var i = 0; i < this.n; i++) {
-		
+	
 		for (var j = 0; j < this.n; j++) {
 			
 			var h = new Hexagon(ctx, this.n * i + j);
@@ -21,7 +21,7 @@ HexTable.prototype.draw = function() {
 			h.setSize(size);
 			var x = size * (j + 1) * 2 + size * (i + 1),
 			    y = size * (i + 1) * 2;
-			h.setCenter(x * .90, y * .80);
+			h.setCenter(x * .92, y * .80);
 			h.draw();
 		}
 	}

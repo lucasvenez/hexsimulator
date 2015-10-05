@@ -14,6 +14,8 @@ public class HexStatus {
 	private static int tableSize = 0;
 
 	private static int winner = 0;
+
+	public static Thread view;
 	
 	private static final List<Integer> whiteMoves = new ArrayList<Integer>();
 	

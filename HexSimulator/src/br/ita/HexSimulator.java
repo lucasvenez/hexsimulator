@@ -39,11 +39,13 @@ public class HexSimulator {
 				
 				Thread p1 = new Thread(new Player(1, port[0], games));
 				Thread p2 = new Thread(new Player(2, port[1], games));
-				Thread v  = new Thread(new View(viewPort));
+				
+				HexStatus.view  = new Thread(new View(viewPort));
 				
 				p1.start();
 				p2.start();
-				v.start();
+				
+				HexStatus.view.start();
 			} else {
 				println("Port numbers should be different.");
 			}			

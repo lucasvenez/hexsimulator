@@ -11,20 +11,41 @@ import br.ita.hexgame.HexStatus;
 
 public class Player implements Runnable {
 
+	/**
+	 * 
+	 */
 	private int playerNumber;
 	
+	/**
+	 * 
+	 */
 	private int port;
 	
+	/**
+	 * 
+	 */
 	private ServerSocket server = null;
 	
+	/**
+	 * 
+	 */
 	private int numberOfGames = 0;
 	
+	/**
+	 * 
+	 * @param playerNumber
+	 * @param port
+	 * @param numberOfGames
+	 */
 	public Player(int playerNumber, int port, int numberOfGames) {
 		this.playerNumber  = playerNumber;
 		this.port          = port;
 		this.numberOfGames = numberOfGames;
 	}
 	
+	/**
+	 * 
+	 */
 	@Override
 	public void run() {
 		
@@ -38,7 +59,6 @@ public class Player implements Runnable {
 		try {
 			server = new ServerSocket(port);
 			
-				
 				try {
 				
 					/*
@@ -80,27 +100,42 @@ public class Player implements Runnable {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param bis
+	 * @param bos
+	 * @throws IOException
+	 */
 	public void communication(DataInputStream bis, DataOutputStream bos) throws IOException {
 		
 		/*
 		 * Expecting HELLO 
 		 */
-		while (!bis.readUTF().equals("HELLO"));
+		receiveMessage("HELLO.*", bis);
 		
 		/*
 		 * Answering OK
 		 */ 
-		bos.writeUTF("OK");
+		sendMessage("OK", bos);
 		
+		/*
+		 * For each game play
+		 */
 		for (int i = 0; i < numberOfGames; i++) {
 		
 			while (true) {
 			
+				/*
+				 * Waiting your time
+				 */
 				while (playerNumber != HexCommand.getCurrentPlayer());
 				
+				/*
+				 * Game is end?
+				 */
 				if (HexStatus.getWinner() > 0) {
 					
-					bos.writeUTF("ENDL" + HexCommand.getLastMove());
+					sendMessage("ENDL" + HexCommand.getLastMove(), bos);
 					
 					HexStatus.setWinner(0);
 					
@@ -115,57 +150,21 @@ public class Player implements Runnable {
 					/*
 					 * Sending GO + last move 
 					 */
-					bos.writeUTF("GO" + HexCommand.getLastMove());
+					sendMessage("GO" + HexCommand.getLastMove(), bos);
 
-					boolean timeout = false; {
-						
-						long itime = System.currentTimeMillis();
-					
-						/*
-						 * Expecting OK 
-						 */
-						while (!bis.readUTF().equals("OK"));
-						
-						/*
-						 * Expecting next move with a time of 5 seconds and 200 milliseconds
-						 */
-					
-						while (bis.available() < 0) {
-							
-							if (System.currentTimeMillis() - itime >= 5200) {
-								timeout = true;
-								break;
-							}
-						}
-					}
-					
 					/*
-					 * Executing move
+					 * 
 					 */
-					boolean winner = false;
-					
-					if (timeout)
-						winner = HexCommand.randomMove(this.playerNumber);
-					else {
-						
-						String message = bis.readUTF();
-						winner = HexCommand.play(this.playerNumber, message);
-						
-					}
-					
-					/* confirm move */ {
-						String message = (timeout ? "TO" : "") + HexCommand.getLastMove();
-						bos.writeUTF(message);
-					}
+					boolean winner = receiveMoveWithTimeOut(bis, bos, 5200);
 					
 					/*
 					 * Expecting OK
 					 */
-					while (!bis.readUTF().equals("OK"));
+					receiveMessage("OK", bis);
 					
 					if (winner) {
 
-						bos.writeUTF("ENDW");
+						sendMessage("ENDW", bos);
 
 						HexStatus.setWinner(this.playerNumber);
 
@@ -186,6 +185,85 @@ public class Player implements Runnable {
 					}
 				}
 			}
+		}
+	}
+	
+	private boolean receiveMoveWithTimeOut(DataInputStream bis, DataOutputStream bos, long time) {
+		
+		/*
+		 * Executing move
+		 */
+		boolean winner = false;
+		
+		try {
+
+			/*
+			 * Counting time for receiving a answer.
+			 */
+			boolean timeout = false;
+			
+			long itime = System.currentTimeMillis();
+		
+			/*
+			 * Expecting OK 
+			 */
+			receiveMessage("OK", bis);
+			
+			/*
+			 * Expecting next move with a time of 5 seconds and 200 milliseconds
+			 */
+			while (bis.available() < 0) {
+				
+				if (System.currentTimeMillis() - itime >= time) {
+					timeout = true;
+					break;
+				}
+			}
+			
+			if (timeout)
+				winner = HexCommand.randomMove(this.playerNumber);
+			else {
+				
+				String message = bis.readUTF();
+				winner = HexCommand.play(this.playerNumber, message);
+				
+			}
+			
+			/* confirm move */ {
+				String message = (timeout ? "TO" : "") + HexCommand.getLastMove();
+				bos.writeUTF(message);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return winner;
+	}
+
+	/**
+	 * 
+	 * @param message
+	 * @param channel
+	 */
+	public void sendMessage(String message, DataOutputStream channel) {
+		try {
+			channel.writeUTF(message);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 
+	 * @param message
+	 * @param channel
+	 */
+	public void receiveMessage(String message, DataInputStream channel) {
+		try {
+			while (!channel.readUTF().matches(message));
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 }
